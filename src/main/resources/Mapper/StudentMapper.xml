@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.classproject.Mapper.StudentInfoMapper">
+    <insert id="addStudens" parameterType="java.util.ArrayList">
+        insert into studentinfo(account,studentid,profession,password,studentname,beclass)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.account,jdbcType=INTEGER},#{item.studentid,jdbcType=INTEGER},#{item.profession,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.studentname,jdbcType=VARCHAR},#{item.beclass,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <update id="updatefinish">
+        <!--concat函数有一个特点就是有一个值为null那么不管第二个字符有多少内容都返回为空了-->
+        update studentinfo set hasfinish=ifnull(concat(hasfinish,",",#{newqsnaireid}),#{newqsnaireid}) where studentid=#{studentid}
+    </update>
+    <update id="updatePassword" >
+        update studentinfo set password=#{newpassword} where studentid=#{studentid}
+    </update>
+    <select id="login" resultType="com.example.classproject.entity.Studentinfo" parameterType="int">
+        select * from studentinfo where account=#{account};
+    </select>
+    <select id="getnewfinish" resultType="string" parameterType="int">
+        select hasfinish from studentinfo where studentid=#{studdentid};
+    </select>
+    <select id="findstudents" resultType="com.example.classproject.entity.Studentinfo" parameterType="int">
+        select beclass,studentid,studentname,profession from studentinfo where beclass=#{beclass}
+    </select>
+    <select id="searchStudent" resultType="com.example.classproject.entity.Studentinfo" parameterType="int">
+        select * from studentinfo where studentid like concat('%',#{studentid},'%')
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.classproject.Mapper.BlankanswerMapper">
+    <insert id="submitanswer" parameterType="java.util.ArrayList">
+        insert into blankanswer(answer,stuaccount,questionid,questionaireid)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.answer,jdbcType=VARCHAR},#{item.stuaccount,jdbcType=INTEGER},
+             #{item.questionid,jdbcType=INTEGER},#{item.questionaireid,jdbcType=INTEGER})
+        </foreach>
+
+    </insert>
+    <select id="getanswer" resultType="com.example.classproject.entity.answer.Blankanswer">
+        select * from blankanswer where questionid in
+        <foreach collection="array" item="item" index="index"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getsingleanswer" parameterType="int" resultType="com.example.classproject.entity.answer.Blankanswer">
+        select * from blankanswer where questionid =#{qsid}
+    </select>
+    <delete id="deleteanswer" parameterType="int">
+        delete from blankanswer where questionaireid=#{questionaireid}
+    </delete>
+</mapper>

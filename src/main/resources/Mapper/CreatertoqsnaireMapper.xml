@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.classproject.Mapper.CreatertoqsnaireMapper">
+    <insert id="createconnect" parameterType="com.example.classproject.entity.Creatertoqsnaire">/*建立老师和问卷之间的关系*/
+        insert into creatertoqsnaire (creater,qsnaireid,starttime,endtime,target,title,createdate) values (#{creater},#{qsnaireid},#{starttime},#{endtime},#{target},#{title},#{createdate})
+    </insert>
+    <update id="updateconnection" parameterType="com.example.classproject.entity.Creatertoqsnaire">
+        update creatertoqsnaire set starttime=#{starttime},endtime=#{endtime},target=#{target},draft=#{draft} where qsnaireid=#{qsnaireid}
+    </update>
+    <delete id="deleteByQuestionaireid" parameterType="int">
+        delete creatertoqsnaire,questionaire from creatertoqsnaire,questionaire
+        where creatertoqsnaire.qsnaireid=#{qsnaireid} and questionaire.id=creatertoqsnaire.qsnaireid
+    </delete>
+    <select id="getmyquestionaire" parameterType="int" resultType="com.example.classproject.entity.Creatertoqsnaire">
+        select * from creatertoqsnaire where creater=#{creater}
+    </select>
+    <select id="stugetquestionaire" parameterType="String" resultType="com.example.classproject.entity.Creatertoqsnaire">
+        select * from creatertoqsnaire where find_in_set(#{target},target)
+    </select>
+</mapper>

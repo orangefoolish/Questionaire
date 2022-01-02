@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.classproject.Mapper.SelectqsMapper">
+    <insert id="addquestion" parameterType="java.util.ArrayList">
+        insert into selectqs(questionaireid,detail,groupname,selects)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.questionaireid,jdbcType=INTEGER},#{item.detail,jdbcType=VARCHAR},#{item.groupname,jdbcType=VARCHAR},#{item.selects,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <select id="findqs" parameterType="int" resultType="com.example.classproject.entity.question.Selectqs">
+        select * from selectqs where questionaireid=#{questionaireid}
+    </select>
+    <delete id="deleteqs" parameterType="int">
+        delete from selectqs where questionaireid=#{questionaireid}
+    </delete>
+</mapper>
